@@ -50,3 +50,8 @@ next-env.d.ts
 
 # visual-review screenshots
 /review/
+
+# booth: .blend working files, reference photos (unclear licence) and generated textures
+*.blend
+/booth-blender/reference/
+/booth-blender/tex/

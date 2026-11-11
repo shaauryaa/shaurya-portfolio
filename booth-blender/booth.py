@@ -1,14 +1,32 @@
 """Build a club booth (4 CDJ-style players + 4-channel mixer) entirely from code and render it with Cycles.
-Usage: python3 booth.py <shot: hero|close|top> <pct> <samples> <out.png>
+
+Headless render:  blender -b -P booth.py -- <shot: hero|close|dj> <pct> <samples> <out.png>
+Live build:       run inside an open Blender (Scripting tab or MCP). Clears the scene's data and rebuilds it,
+                  without resetting preferences or add-ons, and without rendering.
+Run textures.py first (it writes the screen textures into tex/).
 """
 import bpy, math, os, sys, random
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TEX = os.path.join(HERE, "tex")
-shot, pct, samples, out = sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), sys.argv[4]
-HAZE = float(sys.argv[5]) if len(sys.argv) > 5 else 0.06
+ARGS = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
+LIVE = not bpy.app.background and not ARGS
+shot = ARGS[0] if ARGS else "hero"
+pct = int(ARGS[1]) if len(ARGS) > 1 else 50
+samples = int(ARGS[2]) if len(ARGS) > 2 else 64
+out = ARGS[3] if len(ARGS) > 3 else os.path.join(HERE, "out.png")
 
-bpy.ops.wm.read_factory_settings(use_empty=True)
+if LIVE:
+    # wipe only scene data, so preferences and add-ons (MCP) stay as they are
+    for o in list(bpy.data.objects):
+        bpy.data.objects.remove(o, do_unlink=True)
+    for coll in (bpy.data.meshes, bpy.data.materials, bpy.data.lights, bpy.data.cameras,
+                 bpy.data.curves, bpy.data.images, bpy.data.worlds, bpy.data.node_groups):
+        for d in list(coll):
+            if d.users == 0 or coll is not bpy.data.worlds:
+                coll.remove(d)
+else:
+    bpy.ops.wm.read_factory_settings(use_empty=True)
 sc = bpy.context.scene
 col = sc.collection
 
@@ -447,5 +465,6 @@ try:
     sc.view_settings.look = "AgX - Base Contrast"
 except Exception as ex:
     print("look", ex)
-bpy.ops.render.render(write_still=True)
-print("rendered", out)
+if not LIVE:
+    bpy.ops.render.render(write_still=True)
+    print("rendered", out)
