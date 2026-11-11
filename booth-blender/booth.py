@@ -241,8 +241,8 @@ def cdj(cx, idx):
     # hot cue pads under the screen, with their labels strip
     for k in range(8):
         box((cx - 0.105 + k * 0.03, 0.047, z + 0.0026), (0.025, 0.017, 0.005), RUBBER(), 0.0018)
-        on = k < 4 + (idx % 3)
-        box((cx - 0.105 + k * 0.03, 0.0385, z + 0.0035), (0.02, 0.0016, 0.0016), emissive(f"padled{on}", (0.15, 1, 0.3), 3.0 if on else 0.04), 0.0004)
+        on = k < 4 + (idx % 3)  # set hot cues glow in their cue colour, like the real pads
+        box((cx - 0.105 + k * 0.03, 0.0385, z + 0.0035), (0.02, 0.0016, 0.0016), emissive(f"padled{k}{on}", PADC[k], 3.0 if on else 0.04), 0.0004)
     label("HOT CUE", (cx - 0.105, 0.03, z + 0.0002), 0.0045)
 
     # loop / beat-jump section on the left
@@ -256,7 +256,7 @@ def cdj(cx, idx):
     jx, jy = cx, -0.076
     cyl((jx, jy, z + 0.0006), 0.114, 0.0012, SLOT(), verts=160)
     torus((jx, jy, z + 0.0016), 0.1115, 0.0018, METAL())
-    torus((jx, jy, z + 0.0018), 0.1075, 0.0016, emissive("jogled", (0.6, 0.75, 1.0), 1.6))
+    torus((jx, jy, z + 0.0018), 0.1075, 0.0016, METAL())  # chrome inner lip (the CDJ-3000 has no lit ring here)
     cyl((jx, jy, z + 0.009), 0.104, 0.015, DARKMETAL(), 0.0015, verts=160)
     n = 120
     for k in range(n):  # knurled side
@@ -273,9 +273,10 @@ def cdj(cx, idx):
     # CUE + PLAY
     for (yy, c, name, nm) in ((-0.118, ORANGE, "cue", "CUE"), (-0.168, GREEN, "play", "PLAY/PAUSE")):
         bx = cx - 0.143
+        # brushed-metal button face inside a full lit ring, like the CDJ-3000
         cyl((bx, yy, z + 0.0015), 0.0185, 0.003, DARKMETAL(), 0.001)
-        cyl((bx, yy, z + 0.004), 0.0152, 0.006, RUBBER(), 0.0018)
-        torus((bx, yy, z + 0.0035), 0.0168, 0.0014, emissive(name, c, 7.0))
+        cyl((bx, yy, z + 0.0035), 0.0150, 0.005, mat("cueface", (0.70, 0.70, 0.72), 0.3, 1.0, grain=0.05), 0.0015)
+        torus((bx, yy, z + 0.0055), 0.0167, 0.0014, emissive(name, c, 3.5))
         label(nm, (bx, yy + 0.0235, z + 0.0002), 0.0045)
     label("SEARCH", (cx - 0.144, -0.073, z + 0.0002), 0.004)
     for k, t in enumerate(("SOURCE", "BROWSE", "TAG LIST", "PLAYLIST", "SEARCH")):
@@ -415,18 +416,20 @@ def area(name, loc, rot, size, energy, color, sx=None):
     return o
 
 # big overhead softbox slightly behind, so tops get a soft sheen without washing out
-area("key", (0, 0.55, 1.35), (math.radians(-22), 0, 0), 0, 26, (1, 0.98, 0.95), sx=(2.6, 0.9))
+# neutral studio lighting: every light is plain white, no warm or cool tint
+WHITE_LIGHT = (1, 1, 1)
+area("key", (0, 0.55, 1.35), (math.radians(-22), 0, 0), 0, 26, WHITE_LIGHT, sx=(2.6, 0.9))
 # thin strip lights behind for crisp edge highlights
-area("stripL", (-1.3, 1.2, 0.55), (math.radians(-75), math.radians(-40), 0), 0, 35, (0.92, 0.95, 1), sx=(1.4, 0.08))
-area("stripR", (1.3, 1.2, 0.55), (math.radians(-75), math.radians(40), 0), 0, 35, (0.92, 0.95, 1), sx=(1.4, 0.08))
+area("stripL", (-1.3, 1.2, 0.55), (math.radians(-75), math.radians(-40), 0), 0, 35, WHITE_LIGHT, sx=(1.4, 0.08))
+area("stripR", (1.3, 1.2, 0.55), (math.radians(-75), math.radians(40), 0), 0, 35, WHITE_LIGHT, sx=(1.4, 0.08))
 # soft front fill
-area("fill", (0, -2.2, 1.0), (math.radians(65), 0, 0), 3.0, 6, (1, 1, 1))
+area("fill", (0, -2.2, 1.0), (math.radians(65), 0, 0), 3.0, 6, WHITE_LIGHT)
 # gentle gradient on the back wall
-area("wallwash", (0, 2.6, 2.2), (math.radians(-150), 0, 0), 3.0, 9, (0.85, 0.88, 1))
+area("wallwash", (0, 2.6, 2.2), (math.radians(-150), 0, 0), 3.0, 9, WHITE_LIGHT)
 
 w = bpy.data.worlds.new("w")
 w.use_nodes = True
-w.node_tree.nodes["Background"].inputs["Color"].default_value = (0.002, 0.002, 0.003, 1)
+w.node_tree.nodes["Background"].inputs["Color"].default_value = (0.002, 0.002, 0.002, 1)
 sc.world = w
 
 # camera
