@@ -45,3 +45,8 @@ next-env.d.ts
 
 # private planning docs (kept locally, never published)
 /docs/
+# Playwright CLI output (may contain credentials)
+.playwright-cli/
+
+# visual-review screenshots
+/review/
