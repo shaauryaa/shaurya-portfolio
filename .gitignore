@@ -42,3 +42,6 @@ next-env.d.ts
 
 # blender backup files
 *.blend1
+
+# private planning docs (kept locally, never published)
+/docs/

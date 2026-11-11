@@ -6,7 +6,7 @@ Portfolio site for Shaurya Nigam (Full-Stack AI Engineer). Next.js (App Router, 
 
 ## Rules
 
-- **Read the plan first.** The full site plan lives in `docs/plan.md`. Read it before building anything.
+- **Read the plan first.** The full site plan lives in `docs/plan.md`. Read it before building anything. It is private: `docs/` is git-ignored and must never be committed or published.
 - **Zero budget.** Free libraries and assets only (check licences for fonts, sounds, images and components).
 - **Never put the phone number on the site**, anywhere: content, metadata, structured data or comments.
 - **Phones skip the booth.** On phones, go straight from the Loader to the Intro. Phones never download booth frames or clips.

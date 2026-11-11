@@ -19,7 +19,7 @@ Then open http://localhost:3000.
 
 | Path | What's there |
 | --- | --- |
-| `docs/plan.md` | The full site plan |
+| `docs/` | Private planning notes (local only, not in this repo) |
 | `src/app` | Pages, layout and the global theme (`globals.css`) |
 | `src/components/sections` | One component per page section |
 | `src/components/ui` | Shared UI pieces |
