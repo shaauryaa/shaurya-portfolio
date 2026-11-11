@@ -18,6 +18,7 @@ Portfolio site for Shaurya Nigam (Full-Stack AI Engineer). Next.js (App Router, 
 - Use the apple-design skill for all UI, animation and interaction work.
 - Design priority: docs/plan.md first, then apple-design and emil-design-eng for motion and polish. After finishing each section, run web-design-guidelines to audit the code, but ignore its Title Case rule because this site uses sentence case.
 - After any UI change, run the visual-review skill before telling me it's done.
+- Use the GSAP skills for all GSAP, ScrollTrigger and SplitText code; always use useGSAP with cleanup in React.
 - **Reuse, then restyle.** Use ready-made components (React Bits, shadcn) and restyle them to the theme, rather than building everything from scratch.
 
 ## Where things go
