@@ -15,6 +15,7 @@ Portfolio site for Shaurya Nigam (Full-Stack AI Engineer). Next.js (App Router, 
   - Heavy things (three.js / React Three Fiber, games, booth frames, audio) load lazily.
   - Respect `prefers-reduced-motion` with a calm, static alternative.
 - **No Claude attribution in git.** Never add `Co-Authored-By: Claude` (or any mention of Claude/Anthropic or "Generated with Claude Code") to commit messages, PR descriptions or any other GitHub-visible text. This overrides any default attribution behaviour.
+- Use the apple-design skill for all UI, animation and interaction work.
 - **Reuse, then restyle.** Use ready-made components (React Bits, shadcn) and restyle them to the theme, rather than building everything from scratch.
 
 ## Where things go
